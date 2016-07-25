@@ -1,5 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var mysql = require('mysql');
 var methodOverride = require('method-override')
 var app = express();
 
@@ -36,7 +37,23 @@ connection.connect(function(err) {
 })
 
 //Express and MySQL code should go here//
+app.put('/update', function(req,res){
+    connection.query('UPDATE quotes', [req.body.event], function(err, result){
 
+    });
+});
+
+app.post('/delete', function(req,res){
+    connection.query('DELETE FROM quotes', [req.body.event], function(err,result){
+        if (err) throw err;
+    });
+});
+
+app.post('/create', function(req,res){
+    connection.query('INSERT INTO quotes', [req.body.event], function(err, result){
+        if (err) throw err;
+    });
+});
 
 var port = 3000;
 app.listen(port, function() {
