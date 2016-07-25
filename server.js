@@ -37,21 +37,39 @@ connection.connect(function(err) {
 })
 
 //Express and MySQL code should go here//
-app.put('/update', function(req,res){
-    connection.query('UPDATE quotes', [req.body.event], function(err, result){
-
+app.put('/update/:id', function(req,res){
+    connection.query('UPDATE quotes SET author = ?, quote = ? WHERE id = ?', [req.body.author, req.body.quote, req.params.id], function(err, result){
+        if (err) throw err;
+        res.redirect('/');
     });
 });
 
-app.post('/delete', function(req,res){
-    connection.query('DELETE FROM quotes', [req.body.event], function(err,result){
+app.delete('/delete', function(req,res){
+    connection.query('DELETE FROM quotes WHERE id = ?', [req.body.id], function(err,result){
         if (err) throw err;
+        res.redirect('/');
     });
 });
 
 app.post('/create', function(req,res){
-    connection.query('INSERT INTO quotes', [req.body.event], function(err, result){
+    connection.query('INSERT INTO quotes (quote) VALUES (?)', [req.body.event], function(err, result){
         if (err) throw err;
+    });
+});
+
+app.get('/', function(req,res){
+    connection.query('SELECT * FROM quotes', function(err,result){
+        if (err) throw err;
+        res.render({
+            quotes: data
+        });
+    });
+});
+
+app.get('/quotes/:id', function(req,res){
+    connection.query('SELECT FROM quotes WHERE id = ?', [req.params.id], function(err,result){
+        if (err) throw err;
+        res.render(data[0]);
     });
 });
 

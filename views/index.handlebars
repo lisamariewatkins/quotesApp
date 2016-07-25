@@ -10,7 +10,7 @@
       <p><span class="label">Author:</span> {{this.author}}</p>
 
       {{!-- Form should send a delete command to the server --}}
-      <form>
+      <form action='/delete?_method=DELETE' method='POST'>
         <input type="hidden" name="id" value="{{this.id}}">
         <button type="submit">Delete</button>
       </form>
@@ -23,7 +23,7 @@
 <h2>Add a Quote</h2>
 
 {{!-- Form should send a post command to the server --}}
-<form class="create-form">
+<form class="create-form" action='/create' method='POST'>
 
   <div class="form-group">
     <label for="auth">Author:</label>
