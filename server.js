@@ -52,7 +52,7 @@ app.delete('/delete', function(req,res){
 });
 
 app.post('/create', function(req,res){
-    connection.query('INSERT INTO quotes (quote) VALUES (?)', [req.body.event], function(err, result){
+    connection.query('INSERT INTO quotes (author, quote) VALUES (?, ?)', [req.body.author, req.body.quote], function(err, result){
         if (err) throw err;
     });
 });
@@ -60,16 +60,16 @@ app.post('/create', function(req,res){
 app.get('/', function(req,res){
     connection.query('SELECT * FROM quotes', function(err,result){
         if (err) throw err;
-        res.render({
-            quotes: data
+        res.render('index',{ //this is where we connect to index.handlebars
+            quotes: result
         });
     });
 });
 
 app.get('/quotes/:id', function(req,res){
-    connection.query('SELECT FROM quotes WHERE id = ?', [req.params.id], function(err,result){
+    connection.query('SELECT * FROM quotes WHERE id = ?', [req.params.id], function(err,result){
         if (err) throw err;
-        res.render(data[0]);
+        res.render('single_quote', result[0]);
     });
 });
 
